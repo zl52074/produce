@@ -1,0 +1,253 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: zl52074
+  Date: 2020/4/5
+  Time: 17:17
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page pageEncoding="utf-8" isELIgnored="false" %>
+<%@ include file="/WEB-INF/pages/common/common.jsp" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application"/>
+<script>
+    var contextPath = "${contextPath}";
+    var marketId = "${marketId}";
+    var from = "${from}";
+</script>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/datetimepicker/bootstrap-datetimepicker.min.css"/>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/datetimepicker/moment-with-locales.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/produce/marketProduceTable.js"></script>
+
+<html>
+<head>
+    <title>市场详情</title>
+</head>
+<body>
+
+<div style="width: 1400px; margin: 0 auto;padding-top: 15px">
+    <c:if test="${from == 'p'}">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header" style="padding-right: 10px">
+                    <a class="navbar-brand" href="#">农产品价格系统</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="${pageContext.request.contextPath}/priceTable.do">价格行情</a></li>
+                    <li><a href="${pageContext.request.contextPath}/marketTable.do">批发市场</a></li>
+                    <li><a href="${pageContext.request.contextPath}/showListTable.do">展示列表</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <c:if test="${sessionScope.user == null}">
+                        <li><a href="${pageContext.request.contextPath}/user/toRegisterPage.do"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                        <li><a href="${pageContext.request.contextPath}/user/toLoginPage.do"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                    </c:if>
+                    <c:if test="${sessionScope.user != null}">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-user"></span> &nbsp;${sessionScope.user.username}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="${pageContext.request.contextPath}/favoriteListTable.do">收藏列表</a></li>
+                                <li><a href="${pageContext.request.contextPath}/user/toUpdatePage.do">修改信息</a></li>
+                                <li><a href="javascript:void(0);" onclick="logout()" >退出登陆</a></li>
+                            </ul>
+                        </li>
+                    </c:if>
+                </ul>
+            </div>
+        </nav>
+
+        <ul class="breadcrumb">
+            <li><a href="${pageContext.request.contextPath}/priceTable.do">价格行情</a></li>
+            <li class="active">市场详情</li>
+        </ul>
+    </c:if>
+    <c:if test="${from == 's'}">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header" style="padding-right: 10px">
+                    <a class="navbar-brand" href="#">农产品价格系统</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li ><a href="${pageContext.request.contextPath}/priceTable.do">价格行情</a></li>
+                    <li><a href="${pageContext.request.contextPath}/marketTable.do">批发市场</a></li>
+                    <li class="active"><a href="${pageContext.request.contextPath}/showListTable.do">展示列表</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <c:if test="${sessionScope.user == null}">
+                        <li ><a href="${pageContext.request.contextPath}/user/toRegisterPage.do"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                        <li><a href="${pageContext.request.contextPath}/user/toLoginPage.do"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                    </c:if>
+                    <c:if test="${sessionScope.user != null}">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-user"></span> &nbsp;${sessionScope.user.username}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="${pageContext.request.contextPath}/favoriteListTable.do">收藏列表</a></li>
+                                <li><a href="${pageContext.request.contextPath}/user/toUpdatePage.do">修改信息</a></li>
+                                <li><a href="javascript:void(0);" onclick="logout()" >退出登陆</a></li>
+                            </ul>
+                        </li>
+                    </c:if>
+                </ul>
+            </div>
+        </nav>
+
+        <ul class="breadcrumb">
+            <li><a href="${pageContext.request.contextPath}/showListTable.do">展示列表</a></li>
+            <li class="active">市场详情</li>
+        </ul>
+    </c:if>
+    <c:if test="${from == 'f'}">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header" style="padding-right: 10px">
+                    <a class="navbar-brand" href="#">农产品价格系统</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="${pageContext.request.contextPath}/priceTable.do">价格行情</a></li>
+                    <li><a href="${pageContext.request.contextPath}/marketTable.do">批发市场</a></li>
+                    <li><a href="${pageContext.request.contextPath}/showListTable.do">展示列表</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <c:if test="${sessionScope.user == null}">
+                        <li ><a href="${pageContext.request.contextPath}/user/toRegisterPage.do"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                        <li><a href="${pageContext.request.contextPath}/user/toLoginPage.do"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                    </c:if>
+                    <c:if test="${sessionScope.user != null}">
+                        <li class="dropdown active">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-user"></span> &nbsp;${sessionScope.user.username}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="${pageContext.request.contextPath}/favoriteListTable.do">收藏列表</a></li>
+                                <li><a href="${pageContext.request.contextPath}/user/toUpdatePage.do">修改信息</a></li>
+                                <li><a href="javascript:void(0);" onclick="logout()" >退出登陆</a></li>
+                            </ul>
+                        </li>
+                    </c:if>
+                </ul>
+            </div>
+        </nav>
+
+        <ul class="breadcrumb">
+            <li><a href="${pageContext.request.contextPath}/favoriteListTable.do">收藏列表</a></li>
+            <li class="active">市场详情</li>
+        </ul>
+    </c:if>
+
+    <c:if test="${from == 'm'}">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header" style="padding-right: 10px">
+                    <a class="navbar-brand" href="#">农产品价格系统</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li ><a href="${pageContext.request.contextPath}/priceTable.do">价格行情</a></li>
+                    <li class="active"><a href="${pageContext.request.contextPath}/marketTable.do">批发市场</a></li>
+                    <li><a href="${pageContext.request.contextPath}/showListTable.do">展示列表</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <c:if test="${sessionScope.user == null}">
+                        <li><a href="${pageContext.request.contextPath}/user/toRegisterPage.do"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                        <li><a href="${pageContext.request.contextPath}/user/toLoginPage.do"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                    </c:if>
+                    <c:if test="${sessionScope.user != null}">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-user"></span> &nbsp;${sessionScope.user.username}
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="${pageContext.request.contextPath}/favoriteListTable.do">收藏列表</a></li>
+                                <li><a href="${pageContext.request.contextPath}/user/toUpdatePage.do">修改信息</a></li>
+                                <li><a href="javascript:void(0);" onclick="logout()" >退出登陆</a></li>
+                            </ul>
+                        </li>
+                    </c:if>
+                </ul>
+            </div>
+        </nav>
+
+        <ul class="breadcrumb">
+            <li><a href="${pageContext.request.contextPath}/marketTable.do">批发市场</a></li>
+            <li class="active">市场详情</li>
+        </ul>
+    </c:if>
+
+
+    <h2 align="center">${market.marketName}</h2>
+    <h4 align="center" style="padding-top: 10px">
+        ${market.marketType} ● ${market.marketAddress}
+    </h4>
+    <div style= "">
+        <hr>
+        <p style="letter-spacing: 2px;font-size: 15px;text-indent: 30px;line-height: 25px">${market.marketInfo}</p>
+        <hr>
+    </div>
+
+    <div style="display: inline-block;width: 1110px;">
+
+        <div style="display: inline-block;width: 32px;"><strong>产品</strong></div>
+        <div style="display: inline-block;width: 180px;">
+            <select id = "categoryId" class="form-control" name="categoryId">
+                <option>-选择类别-</option>
+                <c:forEach items="${categories}" var="category">
+                    <option value=${category.id}>${category.name}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <div style="display: inline-block;width: 180px;">
+            <select id = "produceId" class="form-control" name="produceId">
+                <option>-选择农产品-</option>
+            </select>
+        </div>
+        <div style="display: inline-block;width: 40px;"><strong>&nbsp;&nbsp;日期</strong></div>
+        <div style="display: inline-block;width: 180px;">
+            <input id="startDate" type="text" class="form-control" >
+        </div>
+        <span><strong>~</strong></span>
+        <div  style="display: inline-block;width: 180px;">
+            <input id="endDate" type="text" class="form-control">
+        </div>
+        &nbsp;&nbsp;
+        <button class="btn btn-primary search" type="button" style="width: 60px">筛选</button>
+        <button id = "reset" class="btn btn-default" type="button" style="width: 60px">重置</button>
+    </div>
+    <div class="form-inline" style="display: inline-block;width: 280px;text-align: right">
+        <input id = "produceName" type="text" class="form-control" placeholder="请输入农产品关键字" style="width: 70%">
+        &nbsp;&nbsp;
+        <button  class="btn btn-primary search" type="button" style="width: 60px">搜索</button>
+    </div>
+
+    <div style="padding-top: 10px">
+        <table class="table  table-bordered table-hover" id="priceTable" style="font-size: 15px">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>marketProduceId</th>
+                <th>produceId</th>
+                <th>农产品</th>
+                <th>categoryId</th>
+                <th>类别</th>
+                <th>marketId</th>
+                <th>价格（元/公斤）</th>
+                <th>更新日期</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div style="height: 50px"></div>
+</body>
+</html>
